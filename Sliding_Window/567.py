@@ -1,31 +1,28 @@
 # 567. Permutation in String
-# Solved
-# Medium
-# Topics
-# premium lock iconCompanies
-# Hint
 
 # Given two strings s1 and s2, return true if s2 contains a
-
 # of s1, or false otherwise.
-
 # In other words, return true if one of s1's permutations is the substring of s2.
 
 
-
 # Example 1:
-
 # Input: s1 = "ab", s2 = "eidbaooo"
 # Output: true
 # Explanation: s2 contains one permutation of s1 ("ba").
 
 # Example 2:
-
 # Input: s1 = "ab", s2 = "eidboaoo"
 # Output: false
 
 class Solution:
     def checkInclusion(self, s1: str, s2: str) -> bool:
+        def updateMatches(newFreq, oldFreq, charIdx):
+            nonlocal matches
+            if newFreq == s1Count[charIdx]:
+                matches += 1
+            if oldFreq == s1Count[charIdx]:
+                matches -= 1
+
         s1Count = [0] * 26
         s2Count = [0] * 26
 
@@ -45,18 +42,16 @@ class Solution:
                 return True
 
             idx = ord(s2[i]) - ord('a')
+            oldFreq = s2Count[idx]
             s2Count[idx] += 1
-            if s2Count[idx] == s1Count[idx]:
-                matches += 1
-            elif s1Count[idx] + 1 == s2Count[idx]:
-                matches -= 1
+            newFreq = s2Count[idx]
+            updateMatches(newFreq, oldFreq, idx)
 
             idx = ord(s2[l]) - ord('a')
+            oldFreq = s2Count[idx]
             s2Count[idx] -= 1
-            if s2Count[idx] == s1Count[idx]:
-                matches += 1
-            elif s1Count[idx] - 1 == s2Count[idx]:
-                matches -= 1
+            newFreq = s2Count[idx]
+            updateMatches(newFreq, oldFreq, idx)
 
             l += 1
 
@@ -64,3 +59,4 @@ class Solution:
 
 
 print(Solution().checkInclusion(s1 = "ab", s2 = "eidbaooo"))
+print(Solution().checkInclusion(s1 = "ab", s2 = "eidboaoo"))

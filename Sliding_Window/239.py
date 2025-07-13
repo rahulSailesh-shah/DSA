@@ -26,27 +26,30 @@
 from collections import deque
 from typing import List
 
+# Time Complexity: O(n), where n is the length of nums.
+# Each element is pushed and popped from the deque at most once.
+# Space Complexity: O(k), for the deque storing at most k indices.
 class Solution:
-    def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
-        q = deque()
-        l = 0
-        r = 0
+  def maxSlidingWindow(self, nums: List[int], k: int) -> List[int]:
+    q = deque()
+    l = 0
+    r = 0
 
-        res = []
+    res = []
 
-        while r < len(nums):
-            while q and nums[r] > q[-1]:
-                q.pop()
+    while r < len(nums):
+      while q and nums[r] > nums[q[-1]]:
+        q.pop()
 
-            q.append(r)
+      q.append(r)
 
-            if l > q[0]:
-                q.popleft()
+      if l > q[0]:
+        q.popleft()
 
-            if(r+1) >= k:
-                res.append(nums[q[0]])
-                l += 1
+      if (r + 1) >= k:
+        res.append(nums[q[0]])
+        l += 1
 
-            r += 1
+      r += 1
 
-        return res
+    return res
